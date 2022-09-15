@@ -75,16 +75,16 @@ class UserModel
 
   public function changePassword($data)
   {
-    $query = "SELECT * FROM users WHERE nip = :nip";
+    $query = "SELECT * FROM users WHERE username = :username";
     $this->db->query($query);
-    $this->db->bind(':nip', $_SESSION['nip']);
+    $this->db->bind(':username', $_SESSION['username']);
 
     $user = $this->db->single();
     if ($user) {
       if (password_verify($data['password'], $user->password)) {
-        $query = "UPDATE users SET password=:password WHERE nip=:nip";
+        $query = "UPDATE users SET password=:password WHERE username=:username";
         $this->db->query($query);
-        $this->db->bind(':nip', $_SESSION['nip']);
+        $this->db->bind(':username', $_SESSION['username']);
         $this->db->bind(':password', password_hash($data['password_baru'], PASSWORD_DEFAULT));
 
         $this->db->execute();
