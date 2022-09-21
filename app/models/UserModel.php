@@ -112,33 +112,37 @@ class UserModel
         return false;
       }
 
-      $newAvatarName = $_SESSION['nip'] . '.' . $file_extension;
+      $newAvatarName = $_SESSION['username'] . '.' . $file_extension;
 
       if ($files['avatar']['size'] < 2000 * 1000) {
-        if (unlink("../public/img/avatar/" . $_SESSION['avatar'])) {
-          move_uploaded_file($files['avatar']['tmp_name'], "../public/img/avatar/" . $newAvatarName);
+        if ($_SESSION['avatar'] == NULL) {
+          move_uploaded_file($files['avatar']['tmp_name'], "../public/images/avatar/" . $newAvatarName);
+        } else {
+          if (unlink("../public/images/avatar/" . $_SESSION['avatar'])) {
+            move_uploaded_file($files['avatar']['tmp_name'], "../public/images/avatar/" . $newAvatarName);
+          }
         }
       } else {
         return false;
       }
     }
 
-    $query = "UPDATE users SET username=:username,nama=:nama,no_telp=:no_telp,email=:email,golongan=:golongan,jabatan=:jabatan,avatar=:avatar WHERE nip=:nip";
+    $query = "UPDATE users SET nip=:nip,nama=:nama,pangkat=:pangkat,email=:email,nik=:nik,avatar=:avatar WHERE username=:username";
     $this->db->query($query);
-    $this->db->bind(':nip', $_SESSION['nip']);
-    $this->db->bind(':username', $data['username']);
+    $this->db->bind(':username', $_SESSION['username']);
+    $this->db->bind(':nip', $data['nip']);
     $this->db->bind(':nama', $data['nama']);
-    $this->db->bind(':no_telp', $data['no_telp']);
+    $this->db->bind(':pangkat', $data['pangkat']);
     $this->db->bind(':email', $data['email']);
-    $this->db->bind(':golongan', $data['golongan']);
-    $this->db->bind(':jabatan', $data['jabatan']);
+    $this->db->bind(':nik', $data['nik']);
     $this->db->bind(':avatar', $newAvatarName);
 
     if ($this->db->execute()) {
-      $_SESSION['username'] = $data['username'];
+      $_SESSION['nip'] = $data['nip'];
       $_SESSION['nama'] = $data['nama'];
       $_SESSION['email'] = $data['email'];
-      $_SESSION['jabatan'] = $data['jabatan'];
+      $_SESSION['pangkat'] = $data['pangkat'];
+      $_SESSION['nik'] = $data['nik'];
       $_SESSION['avatar'] = $newAvatarName;
       return true;
     } else {

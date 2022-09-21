@@ -52,19 +52,19 @@ class Profile extends Controller
   public function changeProfile()
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      if (empty($_POST['nama']) || empty($_POST['no_telp']) || empty($_POST['email']) || empty($_POST['username'])) {
+      if (empty($_POST['nama']) || empty($_POST['nip']) || empty($_POST['pangkat']) || empty($_POST['nik']) || empty($_POST['email'])) {
         setFlash('Form input tidak boleh kosong', 'danger');
-        return redirect('user');
+        return redirect('profile');
       }
       if ($this->userModel->changeProfile($_POST, $_FILES)) {
         setFlash('Berhasil memperbarui profile anda', 'success');
-        return redirect('user');
+        return redirect('profile');
       } else {
         setFlash('Gagal memperbarui profile anda', 'danger');
-        return redirect('user');
+        return redirect('profile');
       }
     } else {
-      return redirect('user');
+      return redirect('profile');
     }
   }
 }

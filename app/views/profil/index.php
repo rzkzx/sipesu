@@ -35,7 +35,7 @@
                 <div class="form-group row">
                   <label for="nip" class="col-sm-3 col-form-label">NIP</label>
                   <div class="col-sm-9">
-                    <input type="text" name="nip" class="form-control" id="nip" placeholder="Email" value="<?= $data['user']->nip ?>">
+                    <input type="text" name="nip" class="form-control" id="nip" value="<?= $data['user']->nip ?>">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -47,7 +47,7 @@
                 <div class="form-group row">
                   <label for="nik" class="col-sm-3 col-form-label">NIK</label>
                   <div class="col-sm-9">
-                    <input type="text" name="nik" class="form-control" id="nik" placeholder="Email" value="<?= $data['user']->nik ?>">
+                    <input type="text" name="nik" class="form-control" id="nik" value="<?= $data['user']->nik ?>">
                   </div>
                 </div>
                 <div class="form-group row">
