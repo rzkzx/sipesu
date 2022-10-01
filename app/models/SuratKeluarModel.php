@@ -81,15 +81,24 @@ class SuratKeluarModel
     $this->db->bind('id', $id);
     $surat = $this->db->single();
 
-    if (unlink("../public/files/lampiran/" . $surat->file_lampiran)) {
+    if ($surat->file_lampiran) {
+      if (unlink("../public/files/lampiran/" . $surat->file_lampiran)) {
+        $query = "DELETE FROM " . $this->surat . " WHERE id=:id";
+        $this->db->query($query);
+        $this->db->bind('id', $id);
+        $this->db->execute();
+
+        return $this->db->rowCount();
+      } else {
+        return false;
+      }
+    } else {
       $query = "DELETE FROM " . $this->surat . " WHERE id=:id";
       $this->db->query($query);
       $this->db->bind('id', $id);
       $this->db->execute();
 
       return $this->db->rowCount();
-    } else {
-      return false;
     }
   }
 
