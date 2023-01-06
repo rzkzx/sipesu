@@ -10,10 +10,6 @@
             <div class="card-header">
               <h3><i class="fa fa-envelope-open"></i> <?= $data['title'] ?></h3>
             </div>
-            <div class="button-table">
-              <a type="button" class="btn btn-primary" href="<?= URLROOT ?>/suratkeluar/add"><i class="fa fa-envelope"></i>&nbsp; Tambah Nomor Surat</a>
-              <a type="button" class="btn btn-success" href="<?= URLROOT ?>/suratkeluar/export"><i class="fa fa-file-text"></i>&nbsp; Export Excel</a>
-            </div>
             <div class="card-body">
               <?php flash(); ?>
               <div class="table-responsive">
@@ -25,7 +21,7 @@
                       <th class="jenis-table">Jenis Surat</th>
                       <th class="tgl-table">Tanggal</th>
                       <th>Asal</th>
-                      <th>Perihal</th>
+                      <!-- <th>Perihal</th> -->
                       <th>Tujuan</th>
                       <td width="20"><b>Aksi</b></td>
                     </tr>
@@ -35,7 +31,7 @@
                     $no = 1;
                     foreach ($data['surat_keluar'] as $sk) {
                       if ($sk->nomor) {
-                        $nomorSurat = $sk->kode . '-' . $sk->nomor . '/' . $sk->detail_nomor . '/' . $sk->tanggal_nomor;
+                        $nomorSurat = $sk->nomor;
                       } else {
                         $nomorSurat = '<span class="text-danger">Belum Disposisi</span>';
                       }
@@ -46,11 +42,10 @@
                         <td><span class="badge badge-primary" style="padding: 10px;"><?= $sk->nama_jenis ?></span></td>
                         <td><?= dateID($sk->tanggal) ?></td>
                         <td><?= $sk->asal ?></td>
-                        <td><?php echo (strlen($sk->perihal) > 50) ? substr($sk->perihal, 0, 50) . "..." : $sk->perihal; ?></td>
+                        <!-- <td><?php echo (strlen($sk->perihal) > 50) ? substr($sk->perihal, 0, 50) . "..." : $sk->perihal; ?></td> -->
                         <td><?= $sk->tujuan ?></td>
                         <td style=" display:flex ;">
-                          <a type="button" class="btn btn-info" href="<?= URLROOT ?>/suratkeluar/detail/<?= $sk->id ?>" style="margin-right:5px;"><i class="fa fa-eye"></i></a>
-                          <button type="button" class="btn btn-danger" id="btnDelete" data-id="<?= $sk->id ?>"><i class="fa fa-trash"></i></button>
+                          <a type="button" class="btn btn-info" href="<?= URLROOT ?>/suratkeluar/disposisi_surat/<?= $sk->id ?>" style="margin-right:5px;"><i class="fa fa-mail-forward"></i> DISPOSISI</a>
                         </td>
                       </tr>
                     <?php

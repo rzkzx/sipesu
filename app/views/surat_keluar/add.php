@@ -36,10 +36,10 @@
             </div>
             <div class="row form-group">
               <div class="col col-md-2">
-                <label for="nomor" class=" form-control-label">Nomor Surat</label>
+                <label for="detail_nomor" class=" form-control-label">Detail Nomor Surat</label>
               </div>
               <div class="col-12 col-md-10">
-                <input type="text" id="nomor" name="nomor" class="form-control" required>
+                <input type="text" id="detail_nomor" name="detail_nomor" placeholder="contoh: O.3.20/Cp.3" class="form-control" required>
               </div>
             </div>
             <div class="row form-group">

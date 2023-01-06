@@ -12,31 +12,31 @@
           <div class="card-body card-block">
             <div class="form-group">
               <label class=" form-control-label">Jenis Surat</label>
-              <input type="text" class="form-control" value="<?= $data['surat_keluar']->nama_jenis ?>">
+              <input type="text" class="form-control" value="<?= $data['surat_keluar']->nama_jenis ?>" readonly>
             </div>
             <div class="form-group">
               <label class=" form-control-label">Nomor Surat</label>
-              <input type="text" class="form-control" value="<?= $data['surat_keluar']->nomor ?>">
+              <input type="text" class="form-control" value="<?= $data['surat_keluar']->nomor ?>" readonly>
             </div>
             <div class="form-group">
               <label class=" form-control-label">Tanggal</label>
-              <input type="text" class="form-control" value="<?= dateID($data['surat_keluar']->tanggal) ?>">
+              <input type="text" class="form-control" value="<?= dateID($data['surat_keluar']->tanggal) ?>" readonly>
             </div>
             <div class="form-group">
               <label class=" form-control-label">Asal</label>
-              <input type="text" class="form-control" value="<?= $data['surat_keluar']->asal ?>">
+              <input type="text" class="form-control" value="<?= $data['surat_keluar']->asal ?>" readonly>
             </div>
             <div class="form-group">
               <label class=" form-control-label">Perihal</label>
-              <textarea class="form-control"><?= $data['surat_keluar']->perihal ?></textarea>
+              <textarea class="form-control" readonly><?= $data['surat_keluar']->perihal ?></textarea>
             </div>
             <div class="form-group">
               <label class=" form-control-label">Tujuan</label>
-              <input type="text" class="form-control" value="<?= $data['surat_keluar']->tujuan ?>">
+              <input type="text" class="form-control" value="<?= $data['surat_keluar']->tujuan ?>" readonly>
             </div>
             <div class="form-group">
               <label class=" form-control-label">Lampiran</label>
-              <input type="text" class="form-control" value="<?= $data['surat_keluar']->lampiran ?>">
+              <input type="text" class="form-control" value="<?= $data['surat_keluar']->lampiran ?>" readonly>
             </div>
             <div class="form-group">
               <label class=" form-control-label">File Lampiran</label>

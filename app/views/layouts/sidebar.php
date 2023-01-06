@@ -32,14 +32,26 @@
             </span>
           </a>
           <ul class="list-unstyled navbar__sub-list js-sub-list" style="<?php echo ($data['menu'] == 'Surat Keluar') ? 'display:block;' : ''; ?>">
-            <li class="<?php echo ($data['submenu'] == 'Jenis Surat Keluar') ? 'active' : ''; ?>">
-              <a href="<?= URLROOT; ?>/suratkeluar/jenis_surat">
-                Jenis Surat</a>
-            </li>
+            <?php if (Middleware::admin()) {
+            ?>
+              <li class="<?php echo ($data['submenu'] == 'Jenis Surat Keluar') ? 'active' : ''; ?>">
+                <a href="<?= URLROOT; ?>/suratkeluar/jenis_surat">
+                  Jenis Surat</a>
+              </li>
+            <?php
+            } ?>
             <li class="<?php echo ($data['submenu'] == 'Permintaan Nomor Surat') ? 'active' : ''; ?>">
               <a href="<?= URLROOT; ?>/suratkeluar">
                 Permintaan Nomor Surat</a>
             </li>
+            <?php if (Middleware::admin()) {
+            ?>
+              <li class="<?php echo ($data['submenu'] == 'Disposisi Surat Keluar') ? 'active' : ''; ?>">
+                <a href="<?= URLROOT; ?>/suratkeluar/disposisi">
+                  Disposisi Surat</a>
+              </li>
+            <?php
+            } ?>
           </ul>
         </li>
         <?php if (Middleware::admin()) {
@@ -113,14 +125,26 @@
               </span>
             </a>
             <ul class="list-unstyled navbar__sub-list js-sub-list" style="<?php echo ($data['menu'] == 'Surat Keluar') ? 'display:block;' : ''; ?>">
-              <li class="<?php echo ($data['submenu'] == 'Jenis Surat Keluar') ? 'active' : ''; ?>">
-                <a href="<?= URLROOT; ?>/suratkeluar/jenis_surat">
-                  Jenis Surat</a>
-              </li>
+              <?php if (Middleware::admin()) {
+              ?>
+                <li class="<?php echo ($data['submenu'] == 'Jenis Surat Keluar') ? 'active' : ''; ?>">
+                  <a href="<?= URLROOT; ?>/suratkeluar/jenis_surat">
+                    Jenis Surat</a>
+                </li>
+              <?php
+              } ?>
               <li class="<?php echo ($data['submenu'] == 'Permintaan Nomor Surat') ? 'active' : ''; ?>">
                 <a href="<?= URLROOT; ?>/suratkeluar">
                   Permintaan Nomor Surat</a>
               </li>
+              <?php if (Middleware::admin()) {
+              ?>
+                <li class="<?php echo ($data['submenu'] == 'Disposisi Surat') ? 'active' : ''; ?>">
+                  <a href="<?= URLROOT; ?>/suratkeluar/disposisi">
+                    Disposisi Surat</a>
+                </li>
+              <?php
+              } ?>
             </ul>
           </li>
           <?php if (Middleware::admin()) {

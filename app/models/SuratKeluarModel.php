@@ -15,7 +15,15 @@ class SuratKeluarModel
   // Surat Keluar
   public function getSuratKeluar()
   {
-    $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat ORDER BY id DESC');
+    $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis,' . $this->jenis . '.kode FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat ORDER BY id DESC');
+    $result = $this->db->resultSet();
+
+    return $result;
+  }
+
+  public function getSuratBelumDisposisi()
+  {
+    $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis,' . $this->jenis . '.kode FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat WHERE ' . $this->surat . '.nomor IS NULL ORDER BY id DESC');
     $result = $this->db->resultSet();
 
     return $result;
@@ -23,7 +31,7 @@ class SuratKeluarModel
 
   public function getSuratKeluarById($id)
   {
-    $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat WHERE ' . $this->surat . '.id=:id');
+    $this->db->query('SELECT ' . $this->surat . '.*,' . $this->jenis . '.nama_jenis,' . $this->jenis . '.kode FROM ' . $this->surat . ' LEFT JOIN ' . $this->jenis . ' ON ' . $this->jenis . '.id=' . $this->surat . '.jenis_surat WHERE ' . $this->surat . '.id=:id');
     $this->db->bind('id', $id);
     $row = $this->db->single();
 
@@ -55,15 +63,18 @@ class SuratKeluarModel
       $nama_file = NULL;
     }
 
-    $query = "INSERT INTO " . $this->surat . " (username, tanggal, jenis_surat, nomor, asal, tujuan, perihal, lampiran, file_lampiran) 
-    VALUES (:username, :tanggal, :jenis_surat, :nomor, :asal, :tujuan, :perihal, :lampiran, :file_lampiran)";
+    $tanggalNomor = date('m') . '/' . date('Y');
+
+    $query = "INSERT INTO " . $this->surat . " (username, tanggal, jenis_surat, detail_nomor, tanggal_nomor, asal, tujuan, perihal, lampiran, file_lampiran) 
+    VALUES (:username, :tanggal, :jenis_surat, :detail_nomor, :tanggal_nomor, :asal, :tujuan, :perihal, :lampiran, :file_lampiran)";
 
 
     $this->db->query($query);
     $this->db->bind('username', $_SESSION['username']);
     $this->db->bind('tanggal', $data['tanggal']);
     $this->db->bind('jenis_surat', $data['jenis_surat']);
-    $this->db->bind('nomor', $data['nomor']);
+    $this->db->bind('detail_nomor', $data['detail_nomor']);
+    $this->db->bind('tanggal_nomor', $tanggalNomor);
     $this->db->bind('asal', $data['asal']);
     $this->db->bind('tujuan', $data['tujuan']);
     $this->db->bind('perihal', $data['perihal']);
@@ -72,6 +83,20 @@ class SuratKeluarModel
     $this->db->execute();
 
     return $this->db->rowCount();
+  }
+
+  public function disposisiSurat($data)
+  {
+    $this->db->query('UPDATE ' . $this->surat . ' SET nomor=:nomor WHERE id=:id');
+    $this->db->bind(':id', $data['id']);
+    $this->db->bind(':nomor', $data['nomor']);
+
+    //execute 
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public function deleteSuratKeluar($id)

@@ -41,6 +41,12 @@ class SuratKeluar extends Controller
         'surat_keluar' => $surat_keluar
       ];
 
+      if ($data['surat_keluar']->nomor) {
+        $data['surat_keluar']->nomor = $data['surat_keluar']->kode . '-' . $data['surat_keluar']->nomor . '/' . $data['surat_keluar']->detail_nomor . '/' . $data['surat_keluar']->tanggal_nomor;
+      } else {
+        $data['surat_keluar']->nomor = 'Belum Disposisi';
+      }
+
       $this->view('surat_keluar/detail', $data);
     } else {
       return redirect('suratkeluar');
@@ -72,7 +78,7 @@ class SuratKeluar extends Controller
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
       //validate error free
-      if (empty($_POST['tanggal']) || empty($_POST['jenis_surat']) || empty($_POST['nomor']) || empty($_POST['asal']) || empty($_POST['perihal']) || empty($_POST['tujuan'])) {
+      if (empty($_POST['tanggal']) || empty($_POST['jenis_surat']) || empty($_POST['detail_nomor']) || empty($_POST['asal']) || empty($_POST['perihal']) || empty($_POST['tujuan'])) {
         //load view with error
         setFlash('Form input tidak boleh kosong', 'danger');
         return redirect('suratkeluar/add');
@@ -102,96 +108,171 @@ class SuratKeluar extends Controller
     }
   }
 
+  public function disposisi()
+  {
+    if (Middleware::admin()) {
+      $surat_keluar = $this->suratKeluarModel->getSuratBelumDisposisi();
+
+      $data = [
+        'title' => 'Disposisi Surat Keluar',
+        'menu' => 'Surat Keluar',
+        'submenu' => 'Disposisi Surat Keluar',
+        'url' => 'suratkeluar',
+        'surat_keluar' => $surat_keluar
+      ];
+
+      $this->view('surat_keluar/disposisi', $data);
+    } else {
+      return redirect('dashboard');
+    }
+  }
+
+  public function disposisi_surat($id = '')
+  {
+    if (Middleware::admin()) {
+      $data = [
+        'title' => 'Disposisi Nomor Surat',
+        'menu' => 'Surat Keluar',
+        'submenu' => 'Disposisi Surat Keluar',
+        'url' => 'suratkeluar',
+      ];
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        //validate error free
+        if (empty($_POST['nomor'])) {
+          //load view with error
+          setFlash('Form input tidak boleh kosong', 'danger');
+          return redirect('suratkeluar/disposisi_surat/' . $_POST['id']);
+        } else {
+          if ($this->suratKeluarModel->disposisiSurat($_POST)) {
+            setFlash('Jenis Surat baru berhasil diperbarui.', 'success');
+            return redirect('suratkeluar/disposisi');
+          } else {
+            die('something went wrong');
+          }
+        }
+      } else {
+        $surat_keluar = $this->suratKeluarModel->getSuratKeluarById($id);
+        if ($surat_keluar) {
+          $data['id'] = $id;
+          $data['surat_keluar'] = $surat_keluar;
+
+          $this->view('surat_keluar/disposisi_surat', $data);
+        } else {
+          return redirect('suratkeluar/disposisi');
+        }
+      }
+    } else {
+      return redirect('dashboard');
+    }
+  }
+
   // Jenis Surat Controller
   public function jenis_surat()
   {
-    $jenis_surat = $this->suratKeluarModel->getJenisSurat();
+    if (Middleware::admin()) {
+      $jenis_surat = $this->suratKeluarModel->getJenisSurat();
 
-    $data = [
-      'title' => 'Jenis Surat Keluar',
-      'menu' => 'Surat Keluar',
-      'submenu' => 'Jenis Surat Keluar',
-      'url' => 'suratkeluar',
-      'jenis_surat' => $jenis_surat
-    ];
+      $data = [
+        'title' => 'Jenis Surat Keluar',
+        'menu' => 'Surat Keluar',
+        'submenu' => 'Jenis Surat Keluar',
+        'url' => 'suratkeluar',
+        'jenis_surat' => $jenis_surat
+      ];
 
-    $this->view('surat_keluar/jenis_surat/index', $data);
+      $this->view('surat_keluar/jenis_surat/index', $data);
+    } else {
+      return redirect('dashboard');
+    }
   }
 
   public function jenis_surat_add()
   {
-    $data = [
-      'title' => 'Tambah Jenis Surat Keluar',
-      'menu' => 'Surat Keluar',
-      'submenu' => 'Jenis Surat Keluar',
-      'url' => 'suratkeluar',
-    ];
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-      //validate error free
-      if (empty($_POST['nama_jenis'])) {
-        //load view with error
-        setFlash('Form input tidak boleh kosong', 'danger');
-        return redirect('suratkeluar/jenis_surat/add');
-      } else {
-        if ($this->suratKeluarModel->addJenisSurat($_POST)) {
-          setFlash('Jenis Surat baru berhasil ditambahkan.', 'success');
-          return redirect('suratkeluar/jenis_surat');
+    if (Middleware::admin()) {
+      $data = [
+        'title' => 'Tambah Jenis Surat Keluar',
+        'menu' => 'Surat Keluar',
+        'submenu' => 'Jenis Surat Keluar',
+        'url' => 'suratkeluar',
+      ];
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        //validate error free
+        if (empty($_POST['nama_jenis'])) {
+          //load view with error
+          setFlash('Form input tidak boleh kosong', 'danger');
+          return redirect('suratkeluar/jenis_surat/add');
         } else {
-          die('something went wrong');
+          if ($this->suratKeluarModel->addJenisSurat($_POST)) {
+            setFlash('Jenis Surat baru berhasil ditambahkan.', 'success');
+            return redirect('suratkeluar/jenis_surat');
+          } else {
+            die('something went wrong');
+          }
         }
+      } else {
+        $this->view('surat_keluar/jenis_surat/add', $data);
       }
     } else {
-      $this->view('surat_keluar/jenis_surat/add', $data);
+      return redirect('dashboard');
     }
   }
 
   public function jenis_surat_edit($id = '')
   {
-    $data = [
-      'title' => 'Edit Jenis Surat Keluar',
-      'menu' => 'Surat Keluar',
-      'submenu' => 'Jenis Surat Keluar',
-      'url' => 'suratkeluar',
-    ];
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-      //validate error free
-      if (empty($_POST['nama_jenis'])) {
-        //load view with error
-        setFlash('Form input tidak boleh kosong', 'danger');
-        return redirect('suratkeluar/jenis_surat_edit/' . $_POST['id']);
-      } else {
-        if ($this->suratKeluarModel->updateJenisSurat($_POST)) {
-          setFlash('Jenis Surat baru berhasil diperbarui.', 'success');
-          return redirect('suratkeluar/jenis_surat');
+    if (Middleware::admin()) {
+      $data = [
+        'title' => 'Edit Jenis Surat Keluar',
+        'menu' => 'Surat Keluar',
+        'submenu' => 'Jenis Surat Keluar',
+        'url' => 'suratkeluar',
+      ];
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        //validate error free
+        if (empty($_POST['nama_jenis'])) {
+          //load view with error
+          setFlash('Form input tidak boleh kosong', 'danger');
+          return redirect('suratkeluar/jenis_surat_edit/' . $_POST['id']);
         } else {
-          die('something went wrong');
+          if ($this->suratKeluarModel->updateJenisSurat($_POST)) {
+            setFlash('Jenis Surat baru berhasil diperbarui.', 'success');
+            return redirect('suratkeluar/jenis_surat');
+          } else {
+            die('something went wrong');
+          }
+        }
+      } else {
+        $jenis_surat = $this->suratKeluarModel->getJenisSuratById($id);
+        if ($jenis_surat) {
+          $data['id'] = $id;
+          $data['jenis_surat'] = $jenis_surat;
+
+          $this->view('surat_keluar/jenis_surat/edit', $data);
+        } else {
+          return redirect('suratkeluar/jenis_surat');
         }
       }
     } else {
-      $jenis_surat = $this->suratKeluarModel->getJenisSuratById($id);
-      if ($jenis_surat) {
-        $data['id'] = $id;
-        $data['jenis_surat'] = $jenis_surat;
-
-        $this->view('surat_keluar/jenis_surat/edit', $data);
-      } else {
-        return redirect('suratkeluar/jenis_surat');
-      }
+      return redirect('dashboard');
     }
   }
 
   public function jenis_surat_delete($id = '')
   {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      if ($this->suratKeluarModel->deleteJenisSurat($id)) {
-        setFlash('Berhasil menghapus Jenis Surat', 'success');
+    if (Middleware::admin()) {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($this->suratKeluarModel->deleteJenisSurat($id)) {
+          setFlash('Berhasil menghapus Jenis Surat', 'success');
+        } else {
+          setFlash('Gagal menghapus Jenis Surat', 'danger');
+        }
       } else {
-        setFlash('Gagal menghapus Jenis Surat', 'danger');
+        return redirect('suratkeluar/jenis_surat');
       }
     } else {
-      return redirect('suratkeluar/jenis_surat');
+      return redirect('dashboard');
     }
   }
 }
