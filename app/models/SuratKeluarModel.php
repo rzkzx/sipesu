@@ -122,8 +122,9 @@ class SuratKeluarModel
 
   public function addJenisSurat($data)
   {
-    $this->db->query('INSERT INTO ' . $this->jenis . ' (nama_jenis) VALUES (:nama_jenis)');
+    $this->db->query('INSERT INTO ' . $this->jenis . ' (nama_jenis, kode) VALUES (:nama_jenis, :kode)');
     $this->db->bind(':nama_jenis', $data['nama_jenis']);
+    $this->db->bind(':kode', $data['kode']);
 
     //execute 
     if ($this->db->execute()) {
@@ -135,9 +136,10 @@ class SuratKeluarModel
 
   public function updateJenisSurat($data)
   {
-    $this->db->query('UPDATE ' . $this->jenis . ' SET nama_jenis=:nama_jenis WHERE id=:id');
+    $this->db->query('UPDATE ' . $this->jenis . ' SET nama_jenis=:nama_jenis,kode=:kode WHERE id=:id');
     $this->db->bind(':id', $data['id']);
     $this->db->bind(':nama_jenis', $data['nama_jenis']);
+    $this->db->bind(':kode', $data['kode']);
 
     //execute 
     if ($this->db->execute()) {

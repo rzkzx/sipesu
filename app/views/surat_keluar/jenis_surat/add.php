@@ -19,6 +19,14 @@
                 <input type="text" id="nama_jenis" name="nama_jenis" class="form-control" required>
               </div>
             </div>
+            <div class="row form-group">
+              <div class="col col-md-2">
+                <label for="kode" class=" form-control-label">Kode Jenis Surat</label>
+              </div>
+              <div class="col-12 col-md-10">
+                <input type="text" id="kode" name="kode" class="form-control" required>
+              </div>
+            </div>
             <div class="card-footer">
               <button type="submit" class="btn btn-primary"><i class="fa fa-envelope"></i>&nbsp; Submit</button>
             </div>

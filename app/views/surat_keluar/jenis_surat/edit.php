@@ -20,6 +20,14 @@
                 <input type="text" id="nama_jenis" name="nama_jenis" class="form-control" required value="<?= $data['jenis_surat']->nama_jenis ?>">
               </div>
             </div>
+            <div class="row form-group">
+              <div class="col col-md-2">
+                <label for="kode" class=" form-control-label">Kode Jenis Surat</label>
+              </div>
+              <div class="col-12 col-md-10">
+                <input type="text" id="kode" name="kode" class="form-control" required value="<?= $data['jenis_surat']->kode ?>">
+              </div>
+            </div>
             <div class="card-footer">
               <button type="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>&nbsp; Perbarui</button>
             </div>

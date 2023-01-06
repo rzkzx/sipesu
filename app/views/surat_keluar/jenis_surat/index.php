@@ -21,6 +21,7 @@
                     <tr>
                       <th width="15">No</th>
                       <th>Nama Jenis Surat</th>
+                      <th>Kode Surat</th>
                       <td width="20"><b>Aksi</b></td>
                     </tr>
                   </thead>
@@ -32,6 +33,7 @@
                       <tr>
                         <td><?= $nomor ?></td>
                         <td><?= $js->nama_jenis ?></td>
+                        <td><?= $js->kode ?></td>
                         <td style=" display:flex ;">
                           <a type="button" class="btn btn-primary" href="<?= URLROOT ?>/suratkeluar/jenis_surat_edit/<?= $js->id ?>" style="margin-right:5px;"><i class="fa fa-pencil-square-o"></i></a>
                           <button type="button" class="btn btn-danger" id="btnDelete" data-id="<?= $js->id ?>"><i class="fa fa-trash"></i></button>
